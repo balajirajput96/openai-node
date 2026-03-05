@@ -14,8 +14,8 @@
     "test:ci": "start-server-and-test start http://localhost:3000 test"
   },
   "dependencies": {
-    "ai": "2.1.34",
-    "next": "^14.2.25",
+    "ai": "6.0.116",
+    "next": "^15.5.10",
     "react": "18.2.0",
     "react-dom": "18.2.0"
   },
@@ -29,6 +29,6 @@
     "start-server-and-test": "^2.0.0",
     "ts-jest": "^29.1.0",
     "typescript": "4.7.4",
-    "vercel": "^31.0.0"
+    "vercel": "^50.27.1"
   }
 }

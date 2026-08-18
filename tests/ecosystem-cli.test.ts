@@ -52,7 +52,7 @@ describe('ecosystem test CLI', () => {
       steps.find((step) => step.startsWith('Run ecosystem tests without live credentials\n')) ?? '';
 
     expect(workflowCondition(liveStep)).toBe(
-      "github.actor != 'dependabot[bot]' && (github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository)",
+      "github.actor != 'dependabot[bot]' && (github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository) && env.LIVE_TESTS_ENABLED == 'true'",
     );
     expect(liveStep).toContain(
       'pnpm tsn ecosystem-tests/cli.ts --live --verbose --parallel --jobs=4 --retry=3',
@@ -61,12 +61,13 @@ describe('ecosystem test CLI', () => {
     expect(liveStep).toContain('secrets.OPENAI_API_KEY');
 
     expect(workflowCondition(nonLiveStep)).toBe(
-      "github.actor == 'dependabot[bot]' || (github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name != github.repository)",
+      "github.actor == 'dependabot[bot]' || (github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name != github.repository) || env.LIVE_TESTS_ENABLED != 'true'",
     );
     expect(nonLiveStep).toContain('pnpm tsn ecosystem-tests/cli.ts --verbose --parallel --jobs=4 --retry=3');
     expect(nonLiveStep).not.toContain('--live');
     expect(nonLiveStep).not.toContain('OPENAI_API_KEY');
     expect(ecosystemJob.split('OPENAI_API_KEY:')).toHaveLength(2);
+    expect(ecosystemJob).toContain("LIVE_TESTS_ENABLED: ${{ secrets.OPENAI_API_KEY != '' }}");
   });
 
   test.each([

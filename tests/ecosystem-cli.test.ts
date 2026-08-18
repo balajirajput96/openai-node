@@ -67,7 +67,7 @@ describe('ecosystem test CLI', () => {
     expect(nonLiveStep).not.toContain('--live');
     expect(nonLiveStep).not.toContain('OPENAI_API_KEY');
     expect(ecosystemJob.split('OPENAI_API_KEY:')).toHaveLength(2);
-    expect(ecosystemJob).toContain("LIVE_TESTS_ENABLED: ${{ secrets.OPENAI_API_KEY != '' }}");
+    expect(ecosystemJob).toContain(`LIVE_TESTS_ENABLED: \${{ secrets.OPENAI_API_KEY != '' }}`);
   });
 
   test.each([
